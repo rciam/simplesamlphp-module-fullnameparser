@@ -15,3 +15,11 @@ This version is compatible with [SimpleSAMLphp v1.14](https://simplesamlphp.org/
   - PHP library to split names into their respective components (first, last, etc)
 - FullNameParsing class
   - Module class that uses the library
+
+## [v1.0.1]
+
+This version is compatible with [SimpleSAMLphp v1.14](https://simplesamlphp.org/docs/1.14/simplesamlphp-changelog)
+
+### Fixed
+
+- Fix class names
