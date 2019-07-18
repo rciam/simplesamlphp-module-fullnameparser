@@ -1,7 +1,4 @@
 <?php
-
-namespace SimpleSAML\Module\fullnameparser;
-
 /**
  * Split a full name into its constituent parts
  *   - prefix/salutation (Mr. Mrs. Dr. etc)
@@ -21,7 +18,7 @@ namespace SimpleSAML\Module\fullnameparser;
  * //   - `TomThak` for raising issue #16 and providing [wikepedia resource](https://cs.wikipedia.org/wiki/Akademick%C3%BD_titul)
  * //   - `atla5` for closing the issue.
  */
-class FullNameParser
+class sspmod_fullnameparser_FullNameParser
 {
     /**
      * Create the dictionary of terms for use later
