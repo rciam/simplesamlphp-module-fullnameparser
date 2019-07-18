@@ -81,7 +81,7 @@ class sspmod_fullnameparser_Auth_Process_FullNameParsing extends SimpleSAML_Auth
 
         if (!empty($request['Attributes'][$this->fullNameAttribute]) && empty($request['Attributes']['firstName']) && empty($request['Attributes']['sn'])) {
             SimpleSAML_Logger::debug("[fullnameparser] process: input: '" . $this->fullNameAttribute . "', value: '" . $request['Attributes'][$this->fullNameAttribute] . "'");
-            $parser = new FullNameParser();
+            $parser = new sspmod_fullnameparser_FullNameParser();
             $splittedName = $parser->parse_name($request['Attributes'][$this->fullNameAttribute][0]);
             if (!empty($splittedName['fname'])) {
                 $request['Attributes'][$this->firstNameAttribute] = array($splittedName['fname']);
