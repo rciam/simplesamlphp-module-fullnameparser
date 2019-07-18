@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Support for parsing email address
 
+### Fixed
+
+- Fix attribute names in the condition of FullNameParsing class
+
 ## [v1.0.1] - 2019-07-18
 
 ### Fixed
