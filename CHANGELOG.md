@@ -13,7 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
-- Fix attribute names in the condition of FullNameParsing class
+- Fix check of existing first/last name information in user attributes based on configured attribute names
 
 ## [v1.0.1] - 2019-07-18
 
