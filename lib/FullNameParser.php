@@ -154,6 +154,15 @@ class sspmod_fullnameparser_FullNameParser
         # Setup default vars
         extract(array('salutation' => '', 'fname' => '', 'initials' => '', 'lname' => '', 'lname_base' => '', 'lname_compound' => '', 'suffix' => ''));
 
+        # Remove email addess, if exists in the name
+        $has_email = $this->get_email($full_name);
+        if ($has_email) {
+            # Remove the email addess from the full name
+            $full_name = str_replace($has_email, '', $full_name);
+            # Get rid of consecutive spaces left by the removal
+            $full_name = str_replace('  ', ' ', $full_name);
+        }
+
         # Find all the professional suffixes possible
         $professional_suffix = $this->get_pro_suffix($full_name);
 
@@ -337,6 +346,21 @@ class sspmod_fullnameparser_FullNameParser
             }
         }
         return $found_suffix_arr;
+    }
+
+
+    /**
+     * Function to check name for existence of email address
+     *
+     * @param string $name the name you wish to test against
+     * @return mixed returns email address if exists, false otherwise
+     */
+    protected function get_email($name)
+    {
+        if (preg_match("/[^@\s]*@[^@\s]*\.[^@\s]*/", $name, $matches)) {
+            return $matches[0];
+        }
+        return false;
     }
 
 
