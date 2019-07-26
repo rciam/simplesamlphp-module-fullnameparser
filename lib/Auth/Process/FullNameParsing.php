@@ -42,7 +42,7 @@ class sspmod_fullnameparser_Auth_Process_FullNameParsing extends SimpleSAML_Auth
 
         if (array_key_exists('fullNameAttribute', $config)) {
             if (!is_string($config['fullNameAttribute'])) {
-                SimpleSAML_Logger::error("[fullnameparser] Configuration error: 'fullNameAttribute' not a string literal");
+                SimpleSAML\Logger::error("[fullnameparser] Configuration error: 'fullNameAttribute' not a string literal");
                 throw new Exception(
                     "fullnameparser configuration error: 'fullNameAttribute' not a string literal");
             }
@@ -51,7 +51,7 @@ class sspmod_fullnameparser_Auth_Process_FullNameParsing extends SimpleSAML_Auth
 
         if (array_key_exists('firstNameAttribute', $config)) {
             if (!is_string($config['firstNameAttribute'])) {
-                SimpleSAML_Logger::error("[fullnameparser] Configuration error: 'firstNameAttribute' not a string literal");
+                SimpleSAML\Logger::error("[fullnameparser] Configuration error: 'firstNameAttribute' not a string literal");
                 throw new Exception(
                     "fullnameparser configuration error: 'firstNameAttribute' not a string literal");
             }
@@ -60,7 +60,7 @@ class sspmod_fullnameparser_Auth_Process_FullNameParsing extends SimpleSAML_Auth
 
         if (array_key_exists('lastNameAttribute', $config)) {
             if (!is_string($config['lastNameAttribute'])) {
-                SimpleSAML_Logger::error("[fullnameparser] Configuration error: 'lastNameAttribute' not a string literal");
+                SimpleSAML\Logger::error("[fullnameparser] Configuration error: 'lastNameAttribute' not a string literal");
                 throw new Exception(
                     "fullnameparser configuration error: 'lastNameAttribute' not a string literal");
             }
@@ -80,16 +80,16 @@ class sspmod_fullnameparser_Auth_Process_FullNameParsing extends SimpleSAML_Auth
         assert(array_key_exists('Attributes', $request));
 
         if (!empty($request['Attributes'][$this->fullNameAttribute]) && empty($request['Attributes'][$this->firstNameAttribute]) && empty($request['Attributes'][$this->lastNameAttribute])) {
-            SimpleSAML_Logger::debug("[fullnameparser] process: input: '" . $this->fullNameAttribute . "', value: '" . $request['Attributes'][$this->fullNameAttribute][0] . "'");
+            SimpleSAML\Logger::debug("[fullnameparser] process: input: '" . $this->fullNameAttribute . "', value: '" . $request['Attributes'][$this->fullNameAttribute][0] . "'");
             $parser = new sspmod_fullnameparser_FullNameParser();
             $splittedName = $parser->parse_name($request['Attributes'][$this->fullNameAttribute][0]);
             if (!empty($splittedName['fname'])) {
                 $request['Attributes'][$this->firstNameAttribute] = array($splittedName['fname']);
-                SimpleSAML_Logger::debug("[fullnameparser] process: output: '" . $this->firstNameAttribute . "', value: '" . $splittedName['fname'] . "'");
+                SimpleSAML\Logger::debug("[fullnameparser] process: output: '" . $this->firstNameAttribute . "', value: '" . $splittedName['fname'] . "'");
             }
             if (!empty($splittedName['lname'])) {
                 $request['Attributes'][$this->lastNameAttribute] = array($splittedName['lname']);
-                SimpleSAML_Logger::debug("[fullnameparser] process: output: '" . $this->lastNameAttribute . "', value: '" . $splittedName['lname'] . "'");
+                SimpleSAML\Logger::debug("[fullnameparser] process: output: '" . $this->lastNameAttribute . "', value: '" . $splittedName['lname'] . "'");
             }
 
         }
