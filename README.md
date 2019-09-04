@@ -14,14 +14,14 @@ The following authproc filter configuration options are supported:
 ### Example authproc filter configuration
 
 ```php
-    authproc = array(
+    authproc = [
         ...
-        30 => array(
+        30 => [
             'class' => 'fullnameparser:FullNameParsing',
             'fullNameAttribute' => 'common_name', // Optional, defaults to 'displayName'
             'firstNameAttribute' => 'first_name', // Optional, defaults to 'givenName'
             'lastNameAttribute' => 'last_name',   // Optional, defaults to 'sn'
-        ),
+        ],
 ```
 
 ## Compatibility matrix

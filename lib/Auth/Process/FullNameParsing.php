@@ -10,14 +10,14 @@ use \SimpleSAML\Module\fullnameparser\FullNameParser;
  * 
  * Example configuration in the config/config.php
  *
- *    authproc.aa = array(
+ *    authproc.aa = [
  *       ...
- *       '60' => array(
+ *       '60' => [
  *            'class' => 'fullnameparser:FullNameParsing',
  *            'fullNameAttribute' => 'common_name', // Optional, defaults to 'displayName'
  *            'firstNameAttribute' => 'first_name', // Optional, defaults to 'givenName'
  *            'lastNameAttribute' => 'last_name',   // Optional, defaults to 'sn'
- *       ),
+ *       ],
  *
  * @author nikosev<nikos.ev@hotmail.com>
  * @package SimpleSAMLphp
@@ -92,11 +92,11 @@ class FullNameParsing extends \SimpleSAML\Auth\ProcessingFilter
             $parser = new FullNameParser();
             $splittedName = $parser->parse_name($request['Attributes'][$this->fullNameAttribute][0]);
             if (!empty($splittedName['fname'])) {
-                $request['Attributes'][$this->firstNameAttribute] = array($splittedName['fname']);
+                $request['Attributes'][$this->firstNameAttribute] = [$splittedName['fname']];
                 Logger::debug("[fullnameparser] process: output: '" . $this->firstNameAttribute . "', value: '" . $splittedName['fname'] . "'");
             }
             if (!empty($splittedName['lname'])) {
-                $request['Attributes'][$this->lastNameAttribute] = array($splittedName['lname']);
+                $request['Attributes'][$this->lastNameAttribute] = [$splittedName['lname']];
                 Logger::debug("[fullnameparser] process: output: '" . $this->lastNameAttribute . "', value: '" . $splittedName['lname'] . "'");
             }
         }
