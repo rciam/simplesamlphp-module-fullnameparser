@@ -1,4 +1,7 @@
 <?php
+
+namespace SimpleSAML\Module\fullnameparser\Auth\Process;
+
 /**
  * Authentication processing filter to split full name to first name and last name.
  * 
@@ -17,7 +20,7 @@
  * @package SimpleSAMLphp
  */
 
-class sspmod_fullnameparser_Auth_Process_FullNameParsing extends SimpleSAML_Auth_ProcessingFilter
+class FullNameParsing extends \SimpleSAML\Auth\ProcessingFilter
 {
 
     private $fullNameAttribute = 'displayName';
