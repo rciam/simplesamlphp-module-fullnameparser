@@ -2,6 +2,9 @@
 
 namespace SimpleSAML\Module\fullnameparser\Auth\Process;
 
+use \Logger;
+use \SimpleSAML\Module\fullnameparser\FullNameParser;
+
 /**
  * Authentication processing filter to split full name to first name and last name.
  * 
@@ -45,7 +48,7 @@ class FullNameParsing extends \SimpleSAML\Auth\ProcessingFilter
 
         if (array_key_exists('fullNameAttribute', $config)) {
             if (!is_string($config['fullNameAttribute'])) {
-                SimpleSAML\Logger::error("[fullnameparser] Configuration error: 'fullNameAttribute' not a string literal");
+                Logger::error("[fullnameparser] Configuration error: 'fullNameAttribute' not a string literal");
                 throw new Exception(
                     "fullnameparser configuration error: 'fullNameAttribute' not a string literal");
             }
@@ -54,7 +57,7 @@ class FullNameParsing extends \SimpleSAML\Auth\ProcessingFilter
 
         if (array_key_exists('firstNameAttribute', $config)) {
             if (!is_string($config['firstNameAttribute'])) {
-                SimpleSAML\Logger::error("[fullnameparser] Configuration error: 'firstNameAttribute' not a string literal");
+                Logger::error("[fullnameparser] Configuration error: 'firstNameAttribute' not a string literal");
                 throw new Exception(
                     "fullnameparser configuration error: 'firstNameAttribute' not a string literal");
             }
@@ -63,7 +66,7 @@ class FullNameParsing extends \SimpleSAML\Auth\ProcessingFilter
 
         if (array_key_exists('lastNameAttribute', $config)) {
             if (!is_string($config['lastNameAttribute'])) {
-                SimpleSAML\Logger::error("[fullnameparser] Configuration error: 'lastNameAttribute' not a string literal");
+                Logger::error("[fullnameparser] Configuration error: 'lastNameAttribute' not a string literal");
                 throw new Exception(
                     "fullnameparser configuration error: 'lastNameAttribute' not a string literal");
             }
@@ -83,16 +86,16 @@ class FullNameParsing extends \SimpleSAML\Auth\ProcessingFilter
         assert(array_key_exists('Attributes', $request));
 
         if (!empty($request['Attributes'][$this->fullNameAttribute]) && empty($request['Attributes'][$this->firstNameAttribute]) && empty($request['Attributes'][$this->lastNameAttribute])) {
-            SimpleSAML\Logger::debug("[fullnameparser] process: input: '" . $this->fullNameAttribute . "', value: '" . $request['Attributes'][$this->fullNameAttribute][0] . "'");
-            $parser = new sspmod_fullnameparser_FullNameParser();
+            Logger::debug("[fullnameparser] process: input: '" . $this->fullNameAttribute . "', value: '" . $request['Attributes'][$this->fullNameAttribute][0] . "'");
+            $parser = new FullNameParser();
             $splittedName = $parser->parse_name($request['Attributes'][$this->fullNameAttribute][0]);
             if (!empty($splittedName['fname'])) {
                 $request['Attributes'][$this->firstNameAttribute] = array($splittedName['fname']);
-                SimpleSAML\Logger::debug("[fullnameparser] process: output: '" . $this->firstNameAttribute . "', value: '" . $splittedName['fname'] . "'");
+                Logger::debug("[fullnameparser] process: output: '" . $this->firstNameAttribute . "', value: '" . $splittedName['fname'] . "'");
             }
             if (!empty($splittedName['lname'])) {
                 $request['Attributes'][$this->lastNameAttribute] = array($splittedName['lname']);
-                SimpleSAML\Logger::debug("[fullnameparser] process: output: '" . $this->lastNameAttribute . "', value: '" . $splittedName['lname'] . "'");
+                Logger::debug("[fullnameparser] process: output: '" . $this->lastNameAttribute . "', value: '" . $splittedName['lname'] . "'");
             }
 
         }
