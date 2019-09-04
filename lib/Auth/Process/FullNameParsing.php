@@ -50,7 +50,8 @@ class FullNameParsing extends \SimpleSAML\Auth\ProcessingFilter
             if (!is_string($config['fullNameAttribute'])) {
                 Logger::error("[fullnameparser] Configuration error: 'fullNameAttribute' not a string literal");
                 throw new Exception(
-                    "fullnameparser configuration error: 'fullNameAttribute' not a string literal");
+                    "fullnameparser configuration error: 'fullNameAttribute' not a string literal"
+                );
             }
             $this->fullNameAttribute = $config['fullNameAttribute'];
         }
@@ -59,7 +60,8 @@ class FullNameParsing extends \SimpleSAML\Auth\ProcessingFilter
             if (!is_string($config['firstNameAttribute'])) {
                 Logger::error("[fullnameparser] Configuration error: 'firstNameAttribute' not a string literal");
                 throw new Exception(
-                    "fullnameparser configuration error: 'firstNameAttribute' not a string literal");
+                    "fullnameparser configuration error: 'firstNameAttribute' not a string literal"
+                );
             }
             $this->firstNameAttribute = $config['firstNameAttribute'];
         }
@@ -68,11 +70,11 @@ class FullNameParsing extends \SimpleSAML\Auth\ProcessingFilter
             if (!is_string($config['lastNameAttribute'])) {
                 Logger::error("[fullnameparser] Configuration error: 'lastNameAttribute' not a string literal");
                 throw new Exception(
-                    "fullnameparser configuration error: 'lastNameAttribute' not a string literal");
+                    "fullnameparser configuration error: 'lastNameAttribute' not a string literal"
+                );
             }
             $this->lastNameAttribute = $config['lastNameAttribute'];
         }
-
     }
 
     /**
@@ -97,7 +99,6 @@ class FullNameParsing extends \SimpleSAML\Auth\ProcessingFilter
                 $request['Attributes'][$this->lastNameAttribute] = array($splittedName['lname']);
                 Logger::debug("[fullnameparser] process: output: '" . $this->lastNameAttribute . "', value: '" . $splittedName['lname'] . "'");
             }
-
         }
     }
 }
