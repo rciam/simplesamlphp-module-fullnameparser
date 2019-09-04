@@ -1,6 +1,6 @@
 <?php
 
-namespace SimpleSAML\Module\fullnameparser\Auth\Process;
+namespace SimpleSAML\Module\fullnameparser;
 
 /**
  * Split a full name into its constituent parts

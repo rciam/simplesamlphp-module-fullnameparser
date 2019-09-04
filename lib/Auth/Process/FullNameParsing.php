@@ -2,7 +2,7 @@
 
 namespace SimpleSAML\Module\fullnameparser\Auth\Process;
 
-use \Logger;
+use \SimpleSAML\Logger;
 use \SimpleSAML\Module\fullnameparser\FullNameParser;
 
 /**
