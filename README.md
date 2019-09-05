@@ -33,6 +33,7 @@ This table matches the module version with the supported SimpleSAMLphp version.
 | v1.0   | v1.14          |
 | v1.1   | v1.14          |
 | v2.0   | v1.15          |
+| v3.0   | v1.17          |
 
 ## License
 
