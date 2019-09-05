@@ -1,4 +1,7 @@
 <?php
+
+namespace SimpleSAML\Module\fullnameparser;
+
 /**
  * Split a full name into its constituent parts
  *   - prefix/salutation (Mr. Mrs. Dr. etc)
@@ -18,7 +21,7 @@
  * //   - `TomThak` for raising issue #16 and providing [wikepedia resource](https://cs.wikipedia.org/wiki/Akademick%C3%BD_titul)
  * //   - `atla5` for closing the issue.
  */
-class sspmod_fullnameparser_FullNameParser
+class FullNameParser
 {
     /**
      * Create the dictionary of terms for use later
@@ -482,7 +485,7 @@ class sspmod_fullnameparser_FullNameParser
     protected function is_initial($word)
     {
         return ((mb_strlen($word) == 1) || (mb_strlen($word) == 2 && $word{
-        1} == "."));
+            1} == "."));
     }
 
 
@@ -525,27 +528,27 @@ class sspmod_fullnameparser_FullNameParser
         if (mb_strlen($word) == 2) {
             # Both letters vowels (uppercase both)
             if (in_array(mb_strtolower($word{
-            0}), $this->dict['vowels']) && in_array(mb_strtolower($word{
-            1}), $this->dict['vowels'])) {
+                0}), $this->dict['vowels']) && in_array(mb_strtolower($word{
+                1}), $this->dict['vowels'])) {
                 $word = mb_strtoupper($word);
             }
             # Both letters consonants (uppercase both)
             if (!in_array(mb_strtolower($word{
-            0}), $this->dict['vowels']) && !in_array(mb_strtolower($word{
-            1}), $this->dict['vowels'])) {
+                0}), $this->dict['vowels']) && !in_array(mb_strtolower($word{
+                1}), $this->dict['vowels'])) {
                 $word = mb_strtoupper($word);
             }
             # First letter is vowel, second letter consonant (uppercase first)
             if (in_array(mb_strtolower($word{
-            0}), $this->dict['vowels']) && !in_array(mb_strtolower($word{
-            1}), $this->dict['vowels'])) {
+                0}), $this->dict['vowels']) && !in_array(mb_strtolower($word{
+                1}), $this->dict['vowels'])) {
                 $word = $this->mb_ucfirst(mb_strtolower($word));
             }
             # First letter consonant, second letter vowel or "y" (uppercase first)
             if (!in_array(mb_strtolower($word{
-            0}), $this->dict['vowels']) && (in_array(mb_strtolower($word{
-            1}), $this->dict['vowels']) || mb_strtolower($word{
-            1}) == 'y')) {
+                0}), $this->dict['vowels']) && (in_array(mb_strtolower($word{
+                1}), $this->dict['vowels']) || mb_strtolower($word{
+                1}) == 'y')) {
                 $word = $this->mb_ucfirst(mb_strtolower($word));
             }
         }

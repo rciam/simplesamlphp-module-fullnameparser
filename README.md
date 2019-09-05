@@ -14,14 +14,14 @@ The following authproc filter configuration options are supported:
 ### Example authproc filter configuration
 
 ```php
-    authproc = array(
+    authproc = [
         ...
-        30 => array(
+        30 => [
             'class' => 'fullnameparser:FullNameParsing',
             'fullNameAttribute' => 'common_name', // Optional, defaults to 'displayName'
             'firstNameAttribute' => 'first_name', // Optional, defaults to 'givenName'
             'lastNameAttribute' => 'last_name',   // Optional, defaults to 'sn'
-        ),
+        ],
 ```
 
 ## Compatibility matrix
@@ -33,6 +33,7 @@ This table matches the module version with the supported SimpleSAMLphp version.
 | v1.0   | v1.14          |
 | v1.1   | v1.14          |
 | v2.0   | v1.15          |
+| v3.0   | v1.17          |
 
 ## License
 
