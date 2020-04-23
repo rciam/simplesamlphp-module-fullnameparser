@@ -26,6 +26,8 @@ class sspmod_fullnameparser_Auth_Process_GenerateFullName extends SimpleSAML_Aut
 
     private $lastNameAttribute = 'sn';
 
+    private $replace = false;
+
     /**
      * Initialize this filter, parse configuration
      *
@@ -67,6 +69,15 @@ class sspmod_fullnameparser_Auth_Process_GenerateFullName extends SimpleSAML_Aut
             $this->lastNameAttribute = $config['lastNameAttribute'];
         }
 
+        if (array_key_exists('replace', $config)) {
+            if (!is_bool($config['replace'])) {
+                SimpleSAML_Logger::error("[GenerateFullName] Configuration error: 'replace' not a boolean");
+                throw new Exception(
+                    "GenerateFullName configuration error: 'replace' not a boolean value");
+            }
+            $this->replace = $config['replace'];
+        }
+
     }
 
     /**
@@ -79,13 +90,23 @@ class sspmod_fullnameparser_Auth_Process_GenerateFullName extends SimpleSAML_Aut
         assert(is_array($state));
         assert(array_key_exists('Attributes', $state));
 
-        if (empty($state['Attributes'][$this->fullNameAttribute]) && !empty($state['Attributes'][$this->firstNameAttribute]) && !empty($state['Attributes'][$this->lastNameAttribute])) {
-            SimpleSAML_Logger::debug("[GenerateFullName] process: input: '" . $this->firstNameAttribute . "', value: '" . $state['Attributes'][$this->firstNameAttribute][0] . "'");
-            SimpleSAML_Logger::debug("[GenerateFullName] process: input: '" . $this->lastNameAttribute . "', value: '" . $state['Attributes'][$this->lastNameAttribute][0] . "'");
-            $state['Attributes'][$this->fullNameAttribute] = array($state['Attributes'][$this->firstNameAttribute][0] . " " . $state['Attributes'][$this->lastNameAttribute][0]);
-            SimpleSAML_Logger::debug("[GenerateFullName] process: output: '" . $this->fullNameAttribute . "', value: '" . $state['Attributes'][$this->fullNameAttribute][0] . "'");
-
+        // Nothing to do if either firstName or lastName attribute is missing
+        if (empty($state['Attributes'][$this->firstNameAttribute]) || empty($state['Attributes'][$this->lastNameAttribute])) {
+            SimpleSAML_Logger::debug("[GenerateFullName] process: Cannot generate " . $this->fullNameAttribute . " attribute");
+            return;
         }
+
+        // Nothing to do if fullName attribute already exists and replace is set to false
+        if (!empty($state['Attributes'][$this->fullNameAttribute]) && !$this->replace)) {
+            SimpleSAML_Logger::debug("[GenerateFullName] process: Cannot replace existing " . $this->fullNameAttribute . " attribute");
+            return;
+        }
+
+        SimpleSAML_Logger::debug("[GenerateFullName] process: input: '" . $this->firstNameAttribute . "', value: '" . $state['Attributes'][$this->firstNameAttribute][0] . "'");
+        SimpleSAML_Logger::debug("[GenerateFullName] process: input: '" . $this->lastNameAttribute . "', value: '" . $state['Attributes'][$this->lastNameAttribute][0] . "'");
+        $state['Attributes'][$this->fullNameAttribute] = array($state['Attributes'][$this->firstNameAttribute][0] . " " . $state['Attributes'][$this->lastNameAttribute][0]);
+        SimpleSAML_Logger::debug("[GenerateFullName] process: output: '" . $this->fullNameAttribute . "', value: '" . $state['Attributes'][$this->fullNameAttribute][0] . "'");
+
     }
 }
 
