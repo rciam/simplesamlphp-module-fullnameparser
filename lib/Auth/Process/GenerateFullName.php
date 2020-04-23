@@ -1,19 +1,22 @@
 <?php
 /**
- * Authentication processing filter to split full name to first name and last name.
+ * Authentication processing filter for generating full name attribute based on
+ * available first name and last name attributes.
  * 
- * Example configuration in the config/config.php
+ * Example configuration:
  *
- *    authproc.aa = array(
+ *    authproc = array(
  *       ...
  *       '61' => array(
  *            'class' => 'fullnameparser:GenerateFullName',
  *            'fullNameAttribute' => 'common_name', // Optional, defaults to 'displayName'
  *            'firstNameAttribute' => 'first_name', // Optional, defaults to 'givenName'
  *            'lastNameAttribute' => 'last_name',   // Optional, defaults to 'sn'
+ *            'replace' => true,   // Optional, defaults to false 
  *       ),
  *
  * @author nikosev<nikos.ev@hotmail.com>
+ * @author Nicolas Liampotis <nliam@grnet.gr>
  * @package SimpleSAMLphp
  */
 
@@ -97,7 +100,7 @@ class sspmod_fullnameparser_Auth_Process_GenerateFullName extends SimpleSAML_Aut
         }
 
         // Nothing to do if fullName attribute already exists and replace is set to false
-        if (!empty($state['Attributes'][$this->fullNameAttribute]) && !$this->replace)) {
+        if (!empty($state['Attributes'][$this->fullNameAttribute]) && !$this->replace) {
             SimpleSAML_Logger::debug("[GenerateFullName] process: Cannot replace existing " . $this->fullNameAttribute . " attribute");
             return;
         }
