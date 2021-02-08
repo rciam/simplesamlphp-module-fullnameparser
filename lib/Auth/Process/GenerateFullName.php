@@ -6,21 +6,24 @@ use SimpleSAML\Auth\ProcessingFilter;
 use SimpleSAML\Logger;
 
 /**
- * Authentication processing filter to split full name to first name and last name.
+ * Authentication processing filter for generating full name attribute based on
+ * available first name and last name attributes.
  *
- * Example configuration in the config/config.php
+ * Example configuration:
  *
- *    authproc.aa = [
+ *    authproc = [
  *       ...
  *       '61' => [
  *            'class' => 'fullnameparser:GenerateFullName',
  *            'fullNameAttribute' => 'common_name', // Optional, defaults to 'displayName'
  *            'firstNameAttribute' => 'first_name', // Optional, defaults to 'givenName'
  *            'lastNameAttribute' => 'last_name',   // Optional, defaults to 'sn'
+ *            'replace' => true,   // Optional, defaults to false
  *       ],
  *    ],
  *
  * @author nikosev<nikos.ev@hotmail.com>
+ * @author Nicolas Liampotis <nliam@grnet.gr>
  * @package SimpleSAMLphp
  */
 
@@ -32,6 +35,8 @@ class GenerateFullName extends ProcessingFilter
     private $firstNameAttribute = 'givenName';
 
     private $lastNameAttribute = 'sn';
+
+    private $replace = false;
 
     /**
      * Initialize this filter, parse configuration
@@ -82,6 +87,16 @@ class GenerateFullName extends ProcessingFilter
             }
             $this->lastNameAttribute = $config['lastNameAttribute'];
         }
+
+        if (array_key_exists('replace', $config)) {
+            if (!is_bool($config['replace'])) {
+                Logger::error("[GenerateFullName] Configuration error: 'replace' not a boolean");
+                throw new Exception(
+                    "GenerateFullName configuration error: 'replace' not a boolean value"
+                );
+            }
+            $this->replace = $config['replace'];
+        }
     }
 
     /**
@@ -94,25 +109,41 @@ class GenerateFullName extends ProcessingFilter
         assert(is_array($state));
         assert(array_key_exists('Attributes', $state));
 
+        // Nothing to do if either firstName or lastName attribute is missing
         if (
-            empty($state['Attributes'][$this->fullNameAttribute])
-            && !empty($state['Attributes'][$this->firstNameAttribute])
-            && !empty($state['Attributes'][$this->lastNameAttribute])
+            empty($state['Attributes'][$this->firstNameAttribute])
+            || empty($state['Attributes'][$this->lastNameAttribute])
         ) {
-            Logger::info("[GenerateFullName] process: Create full name for the user.");
-            $firstName = $state['Attributes'][$this->firstNameAttribute][0];
-            $lastName = $state['Attributes'][$this->lastNameAttribute][0];
-            $fullName = [$firstName . " " . $lastName];
-            Logger::debug(
-                "[GenerateFullName] process: input: '" . $this->firstNameAttribute . "', value: '" . $firstName . "'"
+            SimpleSAML_Logger::debug(
+                "[GenerateFullName] process: Cannot generate " . $this->fullNameAttribute . " attribute"
             );
-            Logger::debug(
-                "[GenerateFullName] process: input: '" . $this->lastNameAttribute . "', value: '" . $lastName . "'"
-            );
-            Logger::debug(
-                "[GenerateFullName] process: output: '" . $this->fullNameAttribute . "', value: '" . $fullName . "'"
-            );
-            $state['Attributes'][$this->fullNameAttribute] = $fullName;
+            return;
         }
+
+        // Nothing to do if fullName attribute already exists and replace is set to false
+        if (
+            !empty($state['Attributes'][$this->fullNameAttribute])
+            && !$this->replace
+        ) {
+            SimpleSAML_Logger::debug(
+                "[GenerateFullName] process: Cannot replace existing " . $this->fullNameAttribute . " attribute"
+            );
+            return;
+        }
+
+        Logger::debug(
+            "[GenerateFullName] process: input: '" . $this->firstNameAttribute . "', value: '"
+            . $state['Attributes'][$this->firstNameAttribute][0] . "'"
+        );
+        Logger::debug(
+            "[GenerateFullName] process: input: '" . $this->lastNameAttribute . "', value: '"
+            . $state['Attributes'][$this->lastNameAttribute][0] . "'"
+        );
+        $state['Attributes'][$this->fullNameAttribute] = array($state['Attributes'][$this->firstNameAttribute][0]
+        . " " . $state['Attributes'][$this->lastNameAttribute][0]);
+        Logger::debug(
+            "[GenerateFullName] process: output: '" . $this->fullNameAttribute . "', value: '"
+            . $state['Attributes'][$this->fullNameAttribute][0] . "'"
+        );
     }
 }
