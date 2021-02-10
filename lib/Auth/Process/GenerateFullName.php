@@ -114,7 +114,7 @@ class GenerateFullName extends ProcessingFilter
             empty($state['Attributes'][$this->firstNameAttribute])
             || empty($state['Attributes'][$this->lastNameAttribute])
         ) {
-            SimpleSAML_Logger::debug(
+            Logger::debug(
                 "[GenerateFullName] process: Cannot generate " . $this->fullNameAttribute . " attribute"
             );
             return;
@@ -125,7 +125,7 @@ class GenerateFullName extends ProcessingFilter
             !empty($state['Attributes'][$this->fullNameAttribute])
             && !$this->replace
         ) {
-            SimpleSAML_Logger::debug(
+            Logger::debug(
                 "[GenerateFullName] process: Cannot replace existing " . $this->fullNameAttribute . " attribute"
             );
             return;
