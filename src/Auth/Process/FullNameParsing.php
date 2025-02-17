@@ -3,7 +3,7 @@
 namespace SimpleSAML\Module\fullnameparser\Auth\Process;
 
 use SimpleSAML\Auth\ProcessingFilter;
-use SimpleSAML\Logger;
+use SimpleSAML\{Logger, Module};
 use SimpleSAML\Module\fullnameparser\FullNameParser;
 
 /**
@@ -21,7 +21,6 @@ use SimpleSAML\Module\fullnameparser\FullNameParser;
  *       ],
  *    ],
  *
- * @author nikosev<nikos.ev@hotmail.com>
  * @package SimpleSAMLphp
  */
 class FullNameParsing extends ProcessingFilter
@@ -41,7 +40,7 @@ class FullNameParsing extends ProcessingFilter
      *
      * @throws Exception If the configuration of the filter is wrong.
      */
-    public function __construct($config, $reserved)
+    public function __construct(array $config, $reserved)
     {
         parent::__construct($config, $reserved);
         assert('is_array($config)');
@@ -83,7 +82,7 @@ class FullNameParsing extends ProcessingFilter
      *
      * @param array &$request The current request.
      */
-    public function process(&$request)
+    public function process(array &$request): void
     {
         assert(is_array($request));
         assert(array_key_exists('Attributes', $request));

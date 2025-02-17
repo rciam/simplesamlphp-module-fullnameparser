@@ -3,7 +3,7 @@
 namespace SimpleSAML\Module\fullnameparser\Auth\Process;
 
 use SimpleSAML\Auth\ProcessingFilter;
-use SimpleSAML\Logger;
+use SimpleSAML\{Logger, Module};
 
 /**
  * Authentication processing filter for generating full name attribute based on
@@ -22,8 +22,6 @@ use SimpleSAML\Logger;
  *       ],
  *    ],
  *
- * @author nikosev<nikos.ev@hotmail.com>
- * @author Nicolas Liampotis <nliam@grnet.gr>
  * @package SimpleSAMLphp
  */
 
@@ -46,7 +44,7 @@ class GenerateFullName extends ProcessingFilter
      *
      * @throws Exception If the configuration of the filter is wrong.
      */
-    public function __construct($config, $reserved)
+    public function __construct(array $config, $reserved)
     {
         parent::__construct($config, $reserved);
         assert('is_array($config)');
@@ -104,7 +102,7 @@ class GenerateFullName extends ProcessingFilter
      *
      * @param array &$state The current state.
      */
-    public function process(&$state)
+    public function process(array &$state): void
     {
         assert(is_array($state));
         assert(array_key_exists('Attributes', $state));
